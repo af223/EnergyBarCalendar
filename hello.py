@@ -37,6 +37,22 @@ def login():
         return redirect('/')
     return render_template('login.html', title='Sign In', form=form)
 
+def formatTime(x):
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    days = {"M" : "Mon", "T": "Tue", "W" : "Wed", "Th": "Thu", "F": "Fri", "Sa": "Sat", "Su" : "Sun"}
+    date = x[:10].split("-")
+    resultDate = days[x[10]] + " " + months[int(date[1])-1] + " " + date[2] + ", " + date[0]
+    time = x[11:].split("-")[0]
+    if int(time[:2]) < 12:
+        resultTime = time[:-3] + " AM"
+        if time[:2] == "00":
+            resultTime = "12" + resultTime[2:]
+    else:
+        resultTime = time[:-3] + " PM"
+        if time[:2] != "12":
+            resultTime = str((int(time[:2]) - 12)) + "" + resultTime[2:]
+    return resultDate, resultTime
+
 @app.route("/cal")
 def cal():
     creds =  None
@@ -98,7 +114,7 @@ def cal():
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        starts.append(start)
+        starts.append(formatTime(start))
         print(start, event['summary'])
     event_list = [(starts[i], events[i]["summary"]) for i in range(len(events))]
 
