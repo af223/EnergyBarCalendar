@@ -2,21 +2,29 @@
     <head>
         <meta  charset="utf-8">
         <title>Upcoming Schedule</title>
+	<link  rel="stylesheet"  href="{{ url_for('static',  filename='cal.css') }}">
     </head>
     <body>
+
         {% extends "template.html" %}
         {% block content %}
         
         <h1>Here's what you got lined up!</h1>
-            <div id="list">
-                
-                <ul>
+
+	    <table style="width:50%" class="center">
+		<tr>
+		  <th>Time</th>
+		  <th>Activity</th>
+		</tr>
                     {% for event in events %}
-                        <li> {{ event }} </li>
+			<tr>
+			  <td>{{ event[0] }} </td>
+			  <td>{{ event[1] }} </td>
+			</tr>
                     {% endfor %}
-                </ul>
-            </div>
+	    </table>
             
         {% endblock %}
+
     </body>
 </html>
