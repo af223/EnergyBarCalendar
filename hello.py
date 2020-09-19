@@ -46,7 +46,6 @@ def login():
         return redirect('/')
     return render_template('login.html', title='Sign In', form=form)
 
-<<<<<<< HEAD
 class Tasks(db.Model): 
     id = db.Column(db.Integer, primary_key=True) 
     text = db.Column(db.String(200)) 
@@ -80,7 +79,6 @@ def complete(id):
     db.session.commit() 
   
     return redirect(url_for('tasks'))
-=======
 def formatTime(x):
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     date = x[:10].split("-")
@@ -95,7 +93,6 @@ def formatTime(x):
         if time[:2] != "12":
             resultTime = str((int(time[:2]) - 12)) + "" + resultTime[2:]
     return resultDate, resultTime
->>>>>>> 1060cb4b9e7aef123c2e951e4783573267078c2c
 
 @app.route("/cal")
 def cal():
