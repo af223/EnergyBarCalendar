@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <meta  charset="utf-8">
+        <title>Flask Parent Template</title>
+        <link  rel="stylesheet"  href="{{ url_for('static',  filename='css/template.css') }}">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1 >My Upcoming Events</h1>
+                <ul class="menu">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('cal') }}">Calendar</a></li>
+                </ul>
+            </div>
+        </header>
+
+    {% block content %}
+    {% endblock %}
+
+    </body>
+</html>
