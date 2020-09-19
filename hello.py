@@ -46,6 +46,7 @@ def login():
         return redirect('/')
     return render_template('login.html', title='Sign In', form=form)
 
+<<<<<<< HEAD
 class Tasks(db.Model): 
     id = db.Column(db.Integer, primary_key=True) 
     text = db.Column(db.String(200)) 
@@ -79,6 +80,22 @@ def complete(id):
     db.session.commit() 
   
     return redirect(url_for('tasks'))
+=======
+def formatTime(x):
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    date = x[:10].split("-")
+    resultDate = months[int(date[1])-1] + " " + date[2] + ", " + date[0]
+    time = x[11:].split("-")[0]
+    if int(time[:2]) < 12:
+        resultTime = time[:-3] + " AM"
+        if time[:2] == "00":
+            resultTime = "12" + resultTime[2:]
+    else:
+        resultTime = time[:-3] + " PM"
+        if time[:2] != "12":
+            resultTime = str((int(time[:2]) - 12)) + "" + resultTime[2:]
+    return resultDate, resultTime
+>>>>>>> 1060cb4b9e7aef123c2e951e4783573267078c2c
 
 @app.route("/cal")
 def cal():
@@ -121,10 +138,11 @@ def cal():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['end'].get('date'))
-        starts.append(start)
-        ends.append(end)
+        starts.append(formatTime(start))
+        ends.append(formatTime(end))
         print(start, end, event['summary'])
     event_list = [(starts[i], ends[i], events[i]["summary"]) for i in range(len(events))]
+
 
     
     return  render_template("cal.html", events=event_list)
