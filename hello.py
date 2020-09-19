@@ -93,14 +93,17 @@ def cal():
                                         orderBy='startTime').execute()
     events = events_result.get('items', [])
     starts =[]
+    ends = []
 
     if not events:
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
+        end = event['end'].get('dateTime', event['end'].get('date'))
         starts.append(start)
-        print(start, event['summary'])
-    event_list = [(starts[i], events[i]["summary"]) for i in range(len(events))]
+        ends.append(end)
+        print(start, end, event['summary'])
+    event_list = [(starts[i], ends[i], events[i]["summary"]) for i in range(len(events))]
 
     
     return  render_template("cal.html", events=event_list)
