@@ -1,5 +1,9 @@
 from  __future__  import print_function
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired
+from config import Config
 import datetime
 import pickle
 import os.path
@@ -12,11 +16,27 @@ from httplib2 import Http
 import datetime
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route("/") # default
 def home():
     return  render_template("home.html")
-  
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash('Login requested for user {}, remember_me={}'.format(
+            form.username.data, form.remember_me.data))
+        return redirect('/')
+    return render_template('login.html', title='Sign In', form=form)
+
 @app.route("/cal")
 def cal():
     creds =  None
