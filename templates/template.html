@@ -2,20 +2,31 @@
     <head>
         <meta  charset="utf-8">
         <title>Flask Parent Template</title>
-        <link  rel="stylesheet"  href="{{ url_for('static',  filename='css/template.css') }}">
+        <link  rel="stylesheet"  href="{{ url_for('static',  filename='template.css') }}">
     </head>
     <body>
-        <header>
-            <div class="container">
-                <h1 >My Upcoming Events</h1>
-                <ul class="menu">
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('cal') }}">Calendar</a></li>
-                    <li><a href="{{ url_for('login') }}">Form</a></li>
-                </ul>
-            </div>
-        </header>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('cal') }}">Calendar</a>
+      <a href="{{ url_for('login') }}">Form</a>
+    </div>
 
+    <h2>Animated Sidenav Example</h2>
+    <p>Click on the element below to open the side navigation menu.</p>
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+
+    <script>
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+    </script>
+
+    
     {% block content %}
     {% endblock %}
 
