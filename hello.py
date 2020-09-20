@@ -48,6 +48,7 @@ class Tasks(db.Model):
     id = db.Column(db.Integer, primary_key=True) 
     text = db.Column(db.String(200)) 
     complete = db.Column(db.Boolean) 
+    priority = db.Column(db.Boolean)
   
     def __repr__(self): 
         return self.text 
@@ -62,7 +63,7 @@ def tasks():
   
 @app.route('/tasks/add', methods=['POST']) 
 def add(): 
-    tasks = Tasks(text=request.form['todoitem'], complete=False) 
+    tasks = Tasks(text=request.form['todoitem'], complete=False, priority=('prioritycheck' in request.form)) 
     db.session.add(tasks) 
     db.session.commit() 
   
