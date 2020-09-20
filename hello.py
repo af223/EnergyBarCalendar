@@ -136,10 +136,19 @@ def cal():
         ends.append(formatTime(end))
         print(start, end, event['summary'])
     event_list = [(starts[i], ends[i], events[i]["summary"]) for i in range(len(events))]
+    print(event_list)
     for i in range(len(event_list)):
         cale = Calen(text=str(event_list[i][2]),eventss=(str(event_list[i][0])+";"+str(event_list[i][1]))) 
         db.session.add(cale) 
         db.session.commit()
+
+    #pull one event only from calendar
+    randomStart = events[1]['start'].get('dateTime', events[1]['start'].get('date'))
+    randomEnd = events[1]['end'].get('dateTime', events[1]['end'].get('date'))
+    msg = randomStart+";"+randomEnd 
+    fout = open('input.txt', 'w')
+    fout.write(msg)
+    fout.close()
 
     
     return  render_template("cal.html", events=event_list)
