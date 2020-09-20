@@ -12,7 +12,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from apiclient.discovery import build 
 from httplib2 import Http
-#from oauth2client import file, client, tools
 import datetime
 from flask_sqlalchemy import SQLAlchemy 
 import os 
@@ -20,10 +19,9 @@ import os
   
 file_path = os.path.abspath(os.getcwd())+"/todo.db"
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'you-will-never-guess'
+app.config['SECRET_KEY'] = 'key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+file_path 
 db = SQLAlchemy(app)  
-#import routes
 
 
 
@@ -98,9 +96,6 @@ def formatTime(x):
 def cal():
     creds =  None
     SCOPES  = ['https://www.googleapis.com/auth/calendar.readonly']
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
     if os.path.exists('token.pickle'):
         with  open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
@@ -122,7 +117,7 @@ def cal():
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     tmax = (datetime.datetime.utcnow()+ datetime.timedelta(hours =24)).isoformat() +'Z'
-    print('Getting the upcoming 10 events')
+    print('Getting events from next 24 hours')
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                         timeMax= tmax, singleEvents=True,
                                         orderBy='startTime').execute()
@@ -139,8 +134,6 @@ def cal():
         ends.append(formatTime(end))
         print(start, end, event['summary'])
     event_list = [(starts[i], ends[i], events[i]["summary"]) for i in range(len(events))]
-
-
     
     return  render_template("cal.html", events=event_list)
     

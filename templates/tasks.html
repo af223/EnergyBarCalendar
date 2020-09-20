@@ -21,13 +21,13 @@
         <h2>Incomplete Items</h2>  
         <ul>  
             {% for todo in incomplete %}  
-            <li style="font-size: 30pt" class='mark'>{{ todo.text }} <a href="{{ url_for('complete', id=todo.id) }}">Mark As Complete</a></li>  
+            <li style="font-size: 15pt" class='mark'>{{ todo.text }} <a href="{{ url_for('complete', id=todo.id) }}">Mark As Complete</a></li>  
             {% endfor %}      
         </ul>  
         <h2>Completed Items</h2>  
         <ul>  
             {% for todo in complete %}  
-            <li style="font-size: 30pt">{{ todo.text }}</li>  
+            <li style="font-size: 15pt">{{ todo.text }}</li>  
             {% endfor %}  
         </ul>  
     </div>  
