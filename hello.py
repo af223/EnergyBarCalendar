@@ -12,15 +12,19 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from apiclient.discovery import build 
 from httplib2 import Http
-import datetime
 from flask_sqlalchemy import SQLAlchemy 
 import os 
 
   
-file_path = os.path.abspath(os.getcwd())+"/todo.db"
+file_path = os.path.abspath(os.getcwd())#+"/todo.db"
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+file_path 
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+file_path 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db1.db'
+app.config['SQLALCHEMY_BINDS'] = {
+    'todo': 'sqlite:///todo.db',
+    'calen': 'sqlite:///calen.db'
+}
 db = SQLAlchemy(app)  
 
 
@@ -29,26 +33,21 @@ db = SQLAlchemy(app)
 def home():
     return render_template("home.html")
 
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect('/')
-    return render_template('login.html', title='Sign In', form=form)
-
 class Tasks(db.Model): 
+    __bind_key__ = 'todo'
     id = db.Column(db.Integer, primary_key=True) 
     text = db.Column(db.String(200)) 
     complete = db.Column(db.Boolean) 
     priority = db.Column(db.Boolean)
+  
+    def __repr__(self): 
+        return self.text 
+
+class Calen(db.Model):
+    __bind_key__ = 'calen'
+    id = db.Column(db.Integer, primary_key=True) 
+    text = db.Column(db.String(200))
+    eventss = db.Column(db.String(200)) 
   
     def __repr__(self): 
         return self.text 
@@ -78,6 +77,7 @@ def complete(id):
     db.session.commit() 
   
     return redirect(url_for('tasks'))
+
 def formatTime(x):
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     date = x[:10].split("-")
@@ -135,6 +135,11 @@ def cal():
         ends.append(formatTime(end))
         print(start, end, event['summary'])
     event_list = [(starts[i], ends[i], events[i]["summary"]) for i in range(len(events))]
+    for i in range(len(event_list)):
+        cale = Calen(text=str(event_list[i][2]),eventss=(str(event_list[i][0])+";"+str(event_list[i][1]))) 
+        db.session.add(cale) 
+        db.session.commit()
+
     
     return  render_template("cal.html", events=event_list)
     
