@@ -1,0 +1,35 @@
+
+<html>
+    <head>
+        <meta  charset="utf-8">
+        <title>Upcoming Schedule</title>
+	<link  rel="stylesheet"  href="{{ url_for('static',  filename='cal.css') }}">
+    </head>
+    <body>
+
+        {% extends "template.html" %}
+        {% block content %}
+        
+        <h1>Here's what you got lined up!</h1>
+
+	    <table style="width:75%" class="center">
+		<tr>
+		  <th>Date</th>
+		  <th>Start Time</th>
+		  <th>End Time</th>
+		  <th>Activity</th>
+		</tr>
+                    {% for event in events %}
+			<tr>
+			  <th>{{ event[0][0] }} </td>
+			  <td>{{ event[0][1] }} </td>
+			  <td>{{ event[1][1] }} </td>
+			  <td>{{ event[2] }} </td>
+			</tr>
+                    {% endfor %}
+	    </table>
+            
+        {% endblock %}
+
+    </body>
+</html>
