@@ -116,9 +116,10 @@ def cal():
     service = build('calendar', 'v3', credentials=creds)
 
     # Call the Calendar API
-    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    tmax = (datetime.datetime.utcnow()+ datetime.timedelta(hours =24)).isoformat() +'Z'
+    now = datetime.datetime(2020, 9, 22,8, 0,00).isoformat() + 'Z' #datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    tmax = datetime.datetime(2020, 9, 22, 22, 0,00).isoformat() +'Z'#(datetime.datetime.utcnow()+ datetime.timedelta(hours =24)).isoformat() +'Z'
     print('Getting events from next 24 hours')
+    print(now,tmax)
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                         timeMax= tmax, singleEvents=True,
                                         orderBy='startTime').execute()
