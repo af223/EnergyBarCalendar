@@ -17,7 +17,19 @@ fin = open('input.txt', 'r')
 busyTimes = fin.readlines()
 
 #tasks variables #add more entries!
-taskNames = ["stem homework", "hum homework"]
+fin2 = open('task-input.txt', 'r')
+rawTasks = fin2.readline().split(";")
+taskArray = []
+for i in rawTasks:
+    if i!='':
+        taskArray.append(i)
+#print(taskArray)
+if len(taskArray)==0:
+    taskNames = ["this is an example"]
+else:
+    taskNames = taskArray
+print(taskNames)
+#taskNames = ["stem homework", "hum homework"]
 
 #plan to work between these times 
 startTime = (8,0)
@@ -318,8 +330,14 @@ def adjustStudyBlocks2(studyBlockList, breakLength):
       adjustedStudyBlocks.append(adjustedStudyBlock)
     return adjustedStudyBlocks  
 
-print("one way to have breaks in between blocks")
-print(adjustStudyBlocks1(studyBlocks, 10))
+#print("one way to have breaks in between blocks")
+#print(adjustStudyBlocks1(studyBlocks, 10))
+
+fout = open('studyBlock-output.txt', 'w')
+
+calendarStudyBlocks = adjustStudyBlocks2(studyBlocks, 10)
+fout.write(str(calendarStudyBlocks))
+fout.close()
 
 print("another way to have breaks in between blocks")
 print(adjustStudyBlocks2(studyBlocks, 10))

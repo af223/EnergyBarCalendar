@@ -27,10 +27,9 @@ app.config['SQLALCHEMY_BINDS'] = {
 }
 db = SQLAlchemy(app)  
 
-
-
 @app.route("/") # default
 def home():
+    open('task-input.txt', 'w').close()
     return render_template("home.html")
 
 class Tasks(db.Model): 
@@ -56,13 +55,16 @@ class Calen(db.Model):
 def tasks(): 
     incomplete = Tasks.query.filter_by(complete=False).all() 
     complete = Tasks.query.filter_by(complete=True).all() 
-  
+    os.system("python studyBlockAlgorithm.py")
     return render_template('tasks.html', incomplete=incomplete, complete=complete) 
   
   
 @app.route('/tasks/add', methods=['POST']) 
 def add(): 
+    fout2 = open('task-input.txt', 'a')
     tasks = Tasks(text=request.form['todoitem'], complete=False, priority=('prioritycheck' in request.form)) 
+    msg2=request.form['todoitem']+";"
+    fout2.write(msg2)
     db.session.add(tasks) 
     db.session.commit() 
   
@@ -149,7 +151,6 @@ def cal():
     fout = open('input.txt', 'w')
     fout.write(msg)
     fout.close()
-
     
     return  render_template("cal.html", events=event_list)
     
